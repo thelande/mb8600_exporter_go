@@ -192,7 +192,7 @@ func (c *MotoClient) GetCookie(name, path, defaultValue string) (string, error) 
 	}
 
 	for _, cookie := range c.client.Jar.Cookies(url) {
-		if cookie.Name == name && cookie.Path == path {
+		if cookie.Name == name && (cookie.Path == path || cookie.Path == "") {
 			return cookie.Value, nil
 		}
 	}
