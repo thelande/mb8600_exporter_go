@@ -158,8 +158,6 @@ func (c *MotoClient) Do(action string, params map[string]string) (map[string]str
 		return nil, nil
 	}
 
-	level.Debug(c.Logger).Log("body", respData)
-
 	var respJsonData map[string]map[string]string
 	if err = json.Unmarshal(respData, &respJsonData); err != nil {
 		return nil, err
@@ -258,11 +256,6 @@ func (c *MotoClient) Login() (map[string]string, error) {
 		return nil, err
 	}
 
-	level.Debug(c.Logger).Log("msg", "response contents")
-	for name, val := range resp {
-		level.Debug(c.Logger).Log("name", name, "value", val)
-	}
-
 	val, ok := resp["LoginResult"]
 	if !ok || val == "FAILED" {
 		return nil, fmt.Errorf("login failed")
@@ -283,11 +276,6 @@ func (c *MotoClient) Login() (map[string]string, error) {
 	resp, err = c.Do("Login", data)
 	if err != nil {
 		return nil, err
-	}
-
-	level.Debug(c.Logger).Log("msg", "response contents")
-	for name, val := range resp {
-		level.Debug(c.Logger).Log("name", name, "value", val)
 	}
 
 	if val, ok = resp["LoginResult"]; !ok || val == "FAILED" {
