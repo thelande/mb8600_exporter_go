@@ -2,19 +2,19 @@ all::
 
 include Makefile.common
 
-BIN ?= go_exporter_tmpl
+BIN ?= mb8600_exporter
 
-PROMTOOL_VERSION ?= 2.30.0
-PROMTOOL_URL     ?= https://github.com/prometheus/prometheus/releases/download/v$(PROMTOOL_VERSION)/prometheus-$(PROMTOOL_VERSION).$(GO_BUILD_PLATFORM).tar.gz
-PROMTOOL         ?= $(FIRST_GOPATH)/bin/promtool
+PROMTOOL_VERSION	?= 2.30.0
+PROMTOOL_URL		?= https://github.com/prometheus/prometheus/releases/download/v$(PROMTOOL_VERSION)/prometheus-$(PROMTOOL_VERSION).$(GO_BUILD_PLATFORM).tar.gz
+PROMTOOL			?= $(FIRST_GOPATH)/bin/promtool
 
-DOCKER_IMAGE_NAME       ?= openmeteo-exporter
-MACH                    ?= $(shell uname -m)
+DOCKER_IMAGE_NAME	?= mb8600-exporter
+MACH				?= $(shell uname -m)
 
-ifeq($(MACH),x86_64)
+ifeq ($(MACH),x86_64)
 ARCH := amd64
 else
-ifeq($(MACH),aarch64)
+ifeq ($(MACH),aarch64)
 ARCH := arm64
 endif
 endif
@@ -35,7 +35,7 @@ fmt:
 
 crossbuild: promu
 	@echo ">> Running crossbuild"
-	GOARCH=amd64 $(PROMU) build --prefix=output/amd64
+	#GOARCH=amd64 $(PROMU) build --prefix=output/amd64
 	GOARCH=arm64 $(PROMU) build --prefix=output/arm64
 
 clean:

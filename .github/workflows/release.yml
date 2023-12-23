@@ -37,7 +37,7 @@ jobs:
         context: .
         push: true
         platforms: linux/amd64,linux/arm64,linux/arm
-        tags: thelande/go_exporter_tmpl:${{ github.ref_name }},thelande/go_exporter_tmpl:latest
+        tags: thelande/mb8600_exporter:${{ github.ref_name }},thelande/mb8600_exporter:latest
 
   build_linux:
     runs-on: ubuntu-latest
@@ -58,8 +58,8 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: go_exporter_tmpl_binaries
-        path: output/go_exporter_tmpl
+        name: mb8600_exporter_binaries
+        path: output/mb8600_exporter
 
     - name: Release
       if: startsWith(github.ref, 'refs/tags/')
@@ -67,7 +67,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         TAG_NAME="${GITHUB_REF##*/}"
-        gh release upload $TAG_NAME output/go_exporter_tmpl
+        gh release upload $TAG_NAME output/mb8600_exporter
 
   build_windows:
     runs-on: windows-2022
@@ -109,14 +109,14 @@ jobs:
           
           # GH requires all files to have different names, so add version/arch to differentiate
           foreach($Arch in "amd64", "arm64") {
-            Move-Item output\$Arch\go_exporter_tmpl.exe output\go_exporter_tmpl-$Version-$Arch.exe
+            Move-Item output\$Arch\mb8600_exporter.exe output\mb8600_exporter-$Version-$Arch.exe
           }
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: go_exporter_tmpl_binaries
-          path: output\go_exporter_tmpl-*.exe
+          name: mb8600_exporter_binaries
+          path: output\mb8600_exporter-*.exe
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -124,4 +124,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $TagName = $env:GITHUB_REF -replace 'refs/tags/', ''
-          Get-ChildItem -Path output\* -Include @('go_exporter_tmpl*.exe', 'sha256sums.txt') | Foreach-Object {gh release upload $TagName $_}
+          Get-ChildItem -Path output\* -Include @('mb8600_exporter*.exe', 'sha256sums.txt') | Foreach-Object {gh release upload $TagName $_}

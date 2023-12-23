@@ -23,6 +23,7 @@ import (
 	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
+	"github.com/thelande/mb8600_exporter/mb8600"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -34,16 +35,28 @@ import (
 )
 
 const (
-	exporterName  = "go_exporter_tmpl"
+	exporterName  = "mb8600_exporter"
 	exporterTitle = "Go Exporter Template"
 )
 
 var (
+	address = kingpin.Flag(
+		"address",
+		"Address of the cable modem.",
+	).Default("192.168.100.1").IP()
+	username = kingpin.Flag(
+		"username",
+		"Username to use to login to the modem.",
+	).Default("admin").Envar("MODEM_USERNAME").String()
+	password = kingpin.Flag(
+		"password",
+		"Password to use to login to the modem.",
+	).Default("motorola").Envar("MODEM_PASSWORD").String()
 	metricsPath = kingpin.Flag(
 		"web.telemetry-path",
 		"Path under which to expose metrics.",
 	).Default("/metrics").String()
-	webConfig = webflag.AddFlags(kingpin.CommandLine, ":9810")
+	webConfig = webflag.AddFlags(kingpin.CommandLine, ":9814")
 	logger    log.Logger
 )
 
@@ -58,6 +71,12 @@ func main() {
 	logger = promlog.New(promlogConfig)
 	level.Info(logger).Log("msg", fmt.Sprintf("Starting %s", exporterName), "version", version.Info())
 	level.Info(logger).Log("msg", "Build context", "build_context", version.BuildContext())
+
+	client := mb8600.NewMotoClient(address.String(), *username, *password, logger)
+	if _, err := client.Login(); err != nil {
+		level.Error(logger).Log("msg", "failed to login", "err", err)
+		os.Exit(1)
+	}
 
 	collector := Collector{}
 

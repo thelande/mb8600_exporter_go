@@ -17,8 +17,8 @@ LABEL maintainer="Tom Helander <thomas.helander@gmail.com>"
 
 WORKDIR /app
 
-COPY --from=builder /src/openmeteo_exporter .
+COPY --from=builder /src/mb8600_exporter .
 
 EXPOSE 9810
 
-ENTRYPOINT ["/app/go_exporter_tmpl"]
+ENTRYPOINT ["/app/mb8600_exporter"]
