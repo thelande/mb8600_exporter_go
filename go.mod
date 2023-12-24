@@ -1,6 +1,6 @@
 module github.com/thelande/mb8600_exporter
 
-go 1.21
+go 1.19
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
