@@ -19,6 +19,6 @@ WORKDIR /app
 
 COPY --from=builder /src/mb8600_exporter .
 
-EXPOSE 9810
+EXPOSE 9814
 
 ENTRYPOINT ["/app/mb8600_exporter"]
