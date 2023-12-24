@@ -49,8 +49,9 @@ jobs:
     - name: Build the binaries
       run: |
         make crossbuild
+        TAG_NAME="${GITHUB_REF##*/v}"
         for arch in amd64 arm64; do
-          mv output/$arch/mb8600_exporter output/mb8600_exporter-${{ github.ref_name }}-linux.$arch
+          mv output/$arch/mb8600_exporter output/mb8600_exporter-${TAG_NAME}-linux.${arch}
         done
       shell: bash
 
@@ -65,7 +66,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        TAG_NAME="${GITHUB_REF##*/}"
+        TAG_NAME="${GITHUB_REF##*/v}"
         for i in output/mb8600_exporter-*; do
           gh release upload $TAG_NAME $i
         done
