@@ -35,7 +35,7 @@ fmt:
 
 crossbuild: promu
 	@echo ">> Running crossbuild"
-	#GOARCH=amd64 $(PROMU) build --prefix=output/amd64
+	GOARCH=amd64 $(PROMU) build --prefix=output/amd64
 	GOARCH=arm64 $(PROMU) build --prefix=output/arm64
 
 clean:
