@@ -56,7 +56,7 @@ var (
 		"web.telemetry-path",
 		"Path under which to expose metrics.",
 	).Default("/metrics").String()
-	webConfig = webflag.AddFlags(kingpin.CommandLine, ":9814")
+	webConfig = webflag.AddFlags(kingpin.CommandLine, ":9813")
 	logger    log.Logger
 )
 
