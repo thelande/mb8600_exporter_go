@@ -1,6 +1,8 @@
 module github.com/thelande/mb8600_exporter
 
-go 1.19
+go 1.21
+
+toolchain go1.21.5
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
@@ -8,6 +10,7 @@ require (
 	github.com/prometheus/client_golang v1.17.0
 	github.com/prometheus/common v0.45.0
 	github.com/prometheus/exporter-toolkit v0.11.0
+	github.com/thelande/mb8600 v1.0.0
 )
 
 require (

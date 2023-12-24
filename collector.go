@@ -21,7 +21,7 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/thelande/mb8600_exporter/mb8600"
+	"github.com/thelande/mb8600/pkg/mb8600"
 )
 
 const namespace = "mb8600"

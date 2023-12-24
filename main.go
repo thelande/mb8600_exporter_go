@@ -23,7 +23,7 @@ import (
 	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
-	"github.com/thelande/mb8600_exporter/mb8600"
+	"github.com/thelande/mb8600/pkg/mb8600"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
