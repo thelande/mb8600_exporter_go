@@ -78,13 +78,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	collector := Collector{}
+	collector := NewCollector(address.String(), *username, *password, logger)
 
-	// Uncomment the following two lines and comment out prometheus.MustRegister(collector)
-	// to exclude the go metrics. Make sure to swap line 88 and 89 as well.
 	registry := prometheus.NewRegistry()
 	registry.MustRegister(collector)
-	// prometheus.MustRegister(collector)
 
 	landingConfig := web.LandingConfig{
 		Name:        exporterTitle,
@@ -104,7 +101,6 @@ func main() {
 	}
 
 	http.Handle(*metricsPath, promhttp.HandlerFor(registry, promhttp.HandlerOpts{}))
-	// http.Handle(*metricsPath, promhttp.Handler())
 	http.Handle("/", landingPage)
 
 	srv := &http.Server{}

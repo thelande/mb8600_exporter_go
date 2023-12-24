@@ -1,3 +1,18 @@
+/*
+Copyright 2023 Thomas Helander
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package mb8600
 
 import (
@@ -14,8 +29,8 @@ type DownstreamChannel struct {
 	Frequency         float64
 	Power             float64
 	SignalToNoise     float64
-	CorrectedErrors   uint64
-	UncorrectedErrors uint64
+	CorrectedErrors   float64
+	UncorrectedErrors float64
 }
 
 type UpstreamChannel struct {
@@ -44,8 +59,13 @@ func NewDownstreamChannelsFromResponse(response string) ([]*DownstreamChannel, e
 
 func NewDownstreamChannelFromLine(line string) (*DownstreamChannel, error) {
 	parts := strings.Split(line, "^")
-	if len(parts) != 9 {
+	if len(parts) != 10 {
 		return nil, fmt.Errorf("invalid number of parts in downstream channel line: %d", len(parts))
+	}
+
+	// Strip whitespace from all parts.
+	for idx := range parts {
+		parts[idx] = strings.Trim(parts[idx], " ")
 	}
 
 	channel, err := strconv.Atoi(parts[0])
@@ -75,12 +95,12 @@ func NewDownstreamChannelFromLine(line string) (*DownstreamChannel, error) {
 		return nil, err
 	}
 
-	corrected, err := strconv.ParseUint(parts[7], 10, 64)
+	corrected, err := strconv.ParseFloat(parts[7], 64)
 	if err != nil {
 		return nil, err
 	}
 
-	uncorrected, err := strconv.ParseUint(parts[8], 10, 64)
+	uncorrected, err := strconv.ParseFloat(parts[8], 64)
 	if err != nil {
 		return nil, err
 	}
@@ -114,8 +134,13 @@ func NewUpstreamChannelsFromResponse(response string) ([]*UpstreamChannel, error
 
 func NewUpstreamChannelFromLine(line string) (*UpstreamChannel, error) {
 	parts := strings.Split(line, "^")
-	if len(parts) != 7 {
+	if len(parts) != 8 {
 		return nil, fmt.Errorf("invalid number of parts in upstream channel line: %d", len(parts))
+	}
+
+	// Strip whitespace from all parts.
+	for idx := range parts {
+		parts[idx] = strings.Trim(parts[idx], " ")
 	}
 
 	channel, err := strconv.Atoi(parts[0])
