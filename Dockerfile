@@ -17,7 +17,7 @@ LABEL maintainer="Tom Helander <thomas.helander@gmail.com>"
 
 WORKDIR /app
 
-COPY --from=builder /src/mb8600_exporter .
+COPY --from=builder /src/output/mb8600_exporter .
 
 EXPOSE 9814
 
